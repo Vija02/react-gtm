@@ -21,8 +21,11 @@ var TagManager = {
       return noscript;
     };
 
-    var script = function script() {
+    var script = function script(nonce) {
       var script = document.createElement('script');
+      if (nonce) {
+        script.setAttribute('nonce', nonce);
+      }
       script.innerHTML = snippets.script;
       return script;
     };
@@ -45,7 +48,9 @@ var TagManager = {
         _ref$auth = _ref.auth,
         auth = _ref$auth === undefined ? '' : _ref$auth,
         _ref$preview = _ref.preview,
-        preview = _ref$preview === undefined ? '' : _ref$preview;
+        preview = _ref$preview === undefined ? '' : _ref$preview,
+        _ref$nonce = _ref.nonce,
+        nonce = _ref$nonce === undefined ? undefined : _ref$nonce;
 
     var gtm = this.gtm({
       id: gtmId,
@@ -53,10 +58,11 @@ var TagManager = {
       dataLayer: dataLayer || undefined,
       dataLayerName: dataLayerName,
       auth: auth,
-      preview: preview
+      preview: preview,
+      nonce: nonce
     });
     if (dataLayer) document.head.appendChild(gtm.dataScript);
-    document.head.insertBefore(gtm.script(), document.head.childNodes[0]);
+    document.head.insertBefore(gtm.script(nonce), document.head.childNodes[0]);
     document.body.insertBefore(gtm.noScript(), document.body.childNodes[0]);
   },
   dataLayer: function dataLayer(_ref2) {
